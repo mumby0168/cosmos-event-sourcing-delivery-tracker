@@ -15,7 +15,7 @@ public interface ISchedule : IAggregateRoot
     
     IReadOnlyList<IStop> Stops { get; }
     
-    IReadOnlyList<IStop> DeliveredStops { get; }
+    IReadOnlyList<IStop> CompletedStops { get; }
     
     IReadOnlyList<IStop> FailedStops { get; }
     
@@ -25,5 +25,7 @@ public interface ISchedule : IAggregateRoot
 
     double Progress { get; }
 
-    void AddStop(Location location);
+    void AddStop(Location location);    
+    
+    void CompleteStop(Guid stopId);
 }

@@ -7,8 +7,8 @@ public partial class Schedule
 {
     public IReadOnlyList<IStop> Stops => _stops;
 
-    public IReadOnlyList<IStop> DeliveredStops => 
-        _stops.Where(x => x.Status is StopStatus.Delivered).ToList();
+    public IReadOnlyList<IStop> CompletedStops => 
+        _stops.Where(x => x.Status is StopStatus.Complete).ToList();
     
     public IReadOnlyList<IStop> FailedStops =>
         _stops.Where(x => x.Status is StopStatus.Failed).ToList();
@@ -29,7 +29,7 @@ public partial class Schedule
         }
         
         var deliverableStops = Stops.Count(x => x.Status is not StopStatus.Abandoned);
-        var visitedStops = FailedStops.Count + DeliveredStops.Count;
+        var visitedStops = FailedStops.Count + CompletedStops.Count;
 
         return visitedStops / deliverableStops * 100;
     }

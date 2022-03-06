@@ -3,7 +3,7 @@ namespace DeliveryTracker.Domain.Enums;
 public enum StopStatus
 {
     Outstanding,
-    Delivered,
+    Complete,
     Failed,
     Abandoned
 }

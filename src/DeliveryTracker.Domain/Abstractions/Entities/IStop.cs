@@ -11,13 +11,13 @@ public interface IStop
     
     Location Location { get; }
     
-    DateTime? DeliveredAt { get; }
+    DateTime? CompletedAt { get; }
     
     DateTime? AbandonedAt { get; }
     
     StopFailedDetails? FailedDetails { get; }
 
-    void Delivered(DateTime at);
+    void Complete(DateTime at);
 
     void Failed(DateTime at, string reason);
 

@@ -1,3 +1,4 @@
+using CleanArchitecture.Exceptions;
 using DeliveryTracker.Domain.Abstractions.Aggregates;
 using DeliveryTracker.Domain.Entities;
 using DeliveryTracker.Domain.Enums;
@@ -26,6 +27,9 @@ public partial class Schedule
             case StopScheduled stopScheduled:
                 Apply(stopScheduled);
                 break;
+            case StopCompleted stopCompleted:
+                Apply(stopCompleted);
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(persistedEvent),
                     $"There is no {nameof(Apply)} method configured for {typeof(IPersistedEvent)} of type {persistedEvent.GetType().Name}");
@@ -49,7 +53,7 @@ public partial class Schedule
             driverSecondName);
     }
 
-    protected void Apply(StopScheduled stopScheduled)
+    private void Apply(StopScheduled stopScheduled)
     {
         var (
             id, 
@@ -66,4 +70,20 @@ public partial class Schedule
             id, 
             location));
     }
+
+    private void Apply(StopCompleted stopCompleted)
+    {
+        var (stopId, at) = stopCompleted;
+        
+        var stop = Stops.FirstOrDefault(x => x.Id == stopId);
+
+        if (stop is null)
+        {
+            throw new ResourceNotFoundException<Stop>(
+                $"A stop with the ID {stopId} was not found on schedule {Id}");
+        }
+
+        stop.Complete(at);
+    }
+    
 }

@@ -11,10 +11,10 @@ public abstract class AggregateRoot : IAggregateRoot
     public IReadOnlyList<IPersistedEvent> UnSavedEvents =>
         _unSavedEvents;
 
-    protected void AddEvent(IPersistedEvent persistedEvent)
+    protected void TryAddEvent(IPersistedEvent persistedEvent)
     {
-        _unSavedEvents.Add(persistedEvent);
         Apply(persistedEvent);
+        _unSavedEvents.Add(persistedEvent);
     }
 
     protected void Apply(List<IPersistedEvent> persistedEvents)

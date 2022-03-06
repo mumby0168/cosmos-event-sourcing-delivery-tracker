@@ -11,12 +11,17 @@ public static class ScheduleEndpoints
 
     public static IEndpointRouteBuilder MapScheduleAPIEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost(Endpoint(), CreateSchedule)
+        builder.MapPost(Endpoint(), DispatchCommand<CreateSchedule.Command>)
             .Produces(200)
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);
         
-        builder.MapPost(Endpoint("/stops"), ScheduleStop)
+        builder.MapPost(Endpoint("/stops"), DispatchCommand<ScheduleStop.Command>)
+            .Produces(200)
+            .Produces<ErrorResponse>(400)
+            .WithTags(Tag);
+        
+        builder.MapPut(Endpoint("/stops/complete"), DispatchCommand<CompleteStop.Command>)
             .Produces(200)
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);
@@ -24,15 +29,9 @@ public static class ScheduleEndpoints
         return builder;
     }
 
-    private static Task CreateSchedule(
-        CreateSchedule.Command command,
+    private static Task DispatchCommand<T>(
+        T command,
         ICommandDispatcher dispatcher,
-        CancellationToken cancellationToken) =>
-        dispatcher.SendAsync(command, cancellationToken);
-
-    private static Task ScheduleStop(
-        ScheduleStop.Command command,
-        ICommandDispatcher dispatcher,
-        CancellationToken cancellationToken) =>
+        CancellationToken cancellationToken) where T : class, ICommand =>
         dispatcher.SendAsync(command, cancellationToken);
 }
