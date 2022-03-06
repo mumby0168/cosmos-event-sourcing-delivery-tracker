@@ -1,7 +1,6 @@
-using DeliveryTracker.Domain.Identifiers;
 using Microsoft.Azure.CosmosEventSourcing;
 
-namespace DeliveryTracker.Domain.Events;
+namespace DeliveryTracker.Domain.Events.Schedules;
 
 public record ScheduleCreated(
     string Id,

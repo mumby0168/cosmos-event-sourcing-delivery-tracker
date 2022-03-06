@@ -22,4 +22,8 @@ public interface IStop
     void Failed(DateTime at, string reason);
 
     void Abandoned(DateTime at);
+    
+    void MarkFailed(string reason, DateTime at);
+    
+    void MarkAbandoned(string reason, DateTime at);
 }

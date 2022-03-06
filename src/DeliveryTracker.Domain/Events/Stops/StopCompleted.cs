@@ -1,6 +1,6 @@
 using DeliveryTracker.Domain.Abstractions.Events;
 
-namespace DeliveryTracker.Domain.Events;
+namespace DeliveryTracker.Domain.Events.Stops;
 
 public record StopCompleted(
     Guid StopId,

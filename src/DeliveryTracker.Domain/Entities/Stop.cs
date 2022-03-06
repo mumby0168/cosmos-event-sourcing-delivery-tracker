@@ -43,4 +43,16 @@ public class Stop : IStop
         Status = StopStatus.Abandoned;
         AbandonedAt = at;
     }
+
+    public void MarkFailed(string reason, DateTime at)
+    {
+        Status = StopStatus.Failed;
+        FailedDetails = new StopFailedDetails(at, reason);
+    }
+
+    public void MarkAbandoned(string reason, DateTime at)
+    {
+        AbandonedAt = at;
+        Status = StopStatus.Abandoned;
+    }
 }

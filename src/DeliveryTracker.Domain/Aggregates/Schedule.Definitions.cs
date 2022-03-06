@@ -2,6 +2,7 @@ using DeliveryTracker.Domain.Abstractions.Aggregates;
 using DeliveryTracker.Domain.Abstractions.Entities;
 using DeliveryTracker.Domain.Enums;
 using DeliveryTracker.Domain.Events;
+using DeliveryTracker.Domain.Events.Schedules;
 using DeliveryTracker.Domain.Identifiers;
 using DeliveryTracker.Domain.ValueObjects;
 

@@ -1,5 +1,5 @@
-using DeliveryTracker.Domain.Events;
-using DeliveryTracker.Domain.Identifiers;
+using DeliveryTracker.Domain.Events.Schedules;
+using DeliveryTracker.Domain.Events.Stops;
 using DeliveryTracker.Infrastructure.Items;
 using DeliveryTracker.Infrastructure.Sources;
 using Microsoft.Azure.CosmosEventSourcing.Projections;

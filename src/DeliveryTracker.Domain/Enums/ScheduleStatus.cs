@@ -4,5 +4,7 @@ public enum ScheduleStatus
 {
     Scheduled,
     InProgress,
+    PartiallyComplete,
+    Abandoned,
     Complete
 }

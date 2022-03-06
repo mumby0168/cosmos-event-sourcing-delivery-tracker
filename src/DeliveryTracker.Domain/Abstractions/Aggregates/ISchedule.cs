@@ -27,7 +27,11 @@ public interface ISchedule : IAggregateRoot
 
     void AddStop(Location location);
 
+    void CompleteStop(Guid stopId);
+
+    void FailStop(Guid stopId, string reason);
+
     void Start();
     
-    void CompleteStop(Guid stopId);
+    void Abandon(string reason);
 }

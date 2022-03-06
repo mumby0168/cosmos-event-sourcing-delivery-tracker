@@ -1,6 +1,6 @@
 using Microsoft.Azure.CosmosEventSourcing;
 
-namespace DeliveryTracker.Domain.Events;
+namespace DeliveryTracker.Domain.Events.Schedules;
 
 public record ScheduleStarted(
     string ScheduleId,

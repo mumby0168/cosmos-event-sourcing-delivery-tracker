@@ -1,7 +1,6 @@
 using DeliveryTracker.Domain.Abstractions.Events;
-using Microsoft.Azure.CosmosEventSourcing;
 
-namespace DeliveryTracker.Domain.Events;
+namespace DeliveryTracker.Domain.Events.Stops;
 
 public record StopScheduled(
     Guid StopId,
