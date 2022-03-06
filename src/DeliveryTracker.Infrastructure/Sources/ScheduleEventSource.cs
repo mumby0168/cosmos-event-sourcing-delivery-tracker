@@ -16,7 +16,7 @@ public class ScheduleEventSource : EventSource
     {
         if (persistedEvent is IStopPersistedEvent stop)
         {
-            StopId = stop.Id;
+            StopId = stop.StopId;
         }
     }
     

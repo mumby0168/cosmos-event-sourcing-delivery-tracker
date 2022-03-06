@@ -4,7 +4,7 @@ using Microsoft.Azure.CosmosEventSourcing;
 namespace DeliveryTracker.Domain.Events;
 
 public record StopScheduled(
-    Guid Id,
+    Guid StopId,
     int HouseNumber, 
     string AddressLine, 
     string PostCode,

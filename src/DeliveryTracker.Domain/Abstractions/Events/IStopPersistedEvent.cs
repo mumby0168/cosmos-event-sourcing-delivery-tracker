@@ -4,5 +4,5 @@ namespace DeliveryTracker.Domain.Abstractions.Events;
 
 public interface IStopPersistedEvent : IPersistedEvent
 {
-    public Guid Id { get; }
+    public Guid StopId { get; }
 }
