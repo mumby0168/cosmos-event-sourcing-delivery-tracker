@@ -1,7 +1,6 @@
 using CleanArchitecture.Exceptions;
 using DeliveryTracker.Domain.Entities;
 using DeliveryTracker.Domain.Enums;
-using DeliveryTracker.Domain.Events;
 using DeliveryTracker.Domain.Events.Schedules;
 using DeliveryTracker.Domain.Events.Stops;
 using DeliveryTracker.Domain.ValueObjects;
@@ -20,6 +19,12 @@ public partial class Schedule
 
     public void Start()
     {
+        if (Status is not ScheduleStatus.Scheduled)
+        {
+            throw new DomainException<Schedule>(
+                $"Cannot start a schedule when at status {Status}");
+        }
+        
         if (!Stops.Any())
         {
             throw new DomainException<Schedule>(
@@ -31,8 +36,19 @@ public partial class Schedule
             DateTime.UtcNow));
     }
 
+    private void EnsureScheduleStarted()
+    {
+        if (Status is not ScheduleStatus.InProgress)
+        {
+            throw new DomainException<Schedule>(
+                $"The schedule is at status {Status} stops cannot be interacted with");
+        }
+    }
+
     public void CompleteStop(Guid stopId)
     {
+        EnsureScheduleStarted();
+        
         if (Status is not ScheduleStatus.InProgress)
         {
             throw new DomainException<Schedule>(
@@ -79,6 +95,8 @@ public partial class Schedule
 
     public void FailStop(Guid stopId, string reason)
     {
+        EnsureScheduleStarted();
+        
         var stop = GetStop(stopId);
 
         if (stop.Status is not StopStatus.Outstanding)
