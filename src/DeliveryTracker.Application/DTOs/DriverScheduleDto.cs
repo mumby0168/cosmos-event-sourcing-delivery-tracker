@@ -6,4 +6,6 @@ public record DriverScheduleDto(
     string DriverCode,
     int Stops,
     int CompletedStops,
-    bool IsInProgress);
+    int FailedStops,
+    int AbandonedStops,
+    string Status);

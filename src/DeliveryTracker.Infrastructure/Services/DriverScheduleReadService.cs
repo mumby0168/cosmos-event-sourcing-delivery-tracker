@@ -24,6 +24,15 @@ public class DriverScheduleReadService : IDriverScheduleReadService
                 x.DriverCode,
                 x.TotalStops,
                 x.CompletedStops,
-                x.IsInProgress));
+                x.FailedStops,
+                x.AbandonedStops,
+                x switch
+                {
+                    {IsInProgress: true} => "In Progress 🚚",
+                    {IsPartiallyComplete: true} => "Partially Completed 🌓",
+                    {IsAbandoned: true} => "Abandoned 🛑",
+                    {IsComplete: true} => "Complete ✅",
+                    _ => throw new ArgumentOutOfRangeException(nameof(x))
+                }));
     }
 }
