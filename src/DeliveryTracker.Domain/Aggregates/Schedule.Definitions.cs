@@ -22,7 +22,7 @@ public partial class Schedule : AggregateRoot, ISchedule
         Id = ScheduleId.NewScheduleId(driver.Code);
         Status = ScheduleStatus.Scheduled;
         
-        TryAddEvent(new ScheduleCreated(
+        AddEvent(new ScheduleCreated(
             Id,
             driver.Code,
             driver.FirstName,

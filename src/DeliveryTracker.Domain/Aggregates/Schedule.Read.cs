@@ -1,4 +1,6 @@
+using CleanArchitecture.Exceptions;
 using DeliveryTracker.Domain.Abstractions.Entities;
+using DeliveryTracker.Domain.Entities;
 using DeliveryTracker.Domain.Enums;
 
 namespace DeliveryTracker.Domain.Aggregates;
@@ -32,5 +34,18 @@ public partial class Schedule
         var visitedStops = FailedStops.Count + CompletedStops.Count;
 
         return visitedStops / deliverableStops * 100;
+    }
+
+    private IStop GetStop(Guid stopId)
+    {
+        var stop = Stops.FirstOrDefault(x => x.Id == stopId);
+
+        if (stop is null)
+        {
+            throw new ResourceNotFoundException<Stop>(
+                $"A stop with the ID {stopId} was not found on schedule {Id}");
+        }
+
+        return stop;
     }
 }

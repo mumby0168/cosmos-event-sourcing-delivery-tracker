@@ -76,24 +76,8 @@ public partial class Schedule
 
     private void Apply(StopCompleted stopCompleted)
     {
-        if (Status is not ScheduleStatus.InProgress)
-        {
-            throw new DomainException<Schedule>(
-                $"A stop cannot be completed when the schedule is at status {Status}. " +
-                "The schedule must be in progress.");
-        }
-
-
         var (stopId, at) = stopCompleted;
-
-        var stop = Stops.FirstOrDefault(x => x.Id == stopId);
-
-        if (stop is null)
-        {
-            throw new ResourceNotFoundException<Stop>(
-                $"A stop with the ID {stopId} was not found on schedule {Id}");
-        }
-
+        var stop = Stops.First(x => x.Id == stopId);
         stop.Complete(at);
     }
 

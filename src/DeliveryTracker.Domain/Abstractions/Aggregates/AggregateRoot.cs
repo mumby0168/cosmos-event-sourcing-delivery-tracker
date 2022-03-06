@@ -11,7 +11,7 @@ public abstract class AggregateRoot : IAggregateRoot
     public IReadOnlyList<IPersistedEvent> UnSavedEvents =>
         _unSavedEvents;
 
-    protected void TryAddEvent(IPersistedEvent persistedEvent)
+    protected void AddEvent(IPersistedEvent persistedEvent)
     {
         Apply(persistedEvent);
         _unSavedEvents.Add(persistedEvent);

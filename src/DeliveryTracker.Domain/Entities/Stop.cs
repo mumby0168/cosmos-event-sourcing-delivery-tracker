@@ -28,12 +28,6 @@ public class Stop : IStop
 
     public void Complete(DateTime at)
     {
-        if (Status is not StopStatus.Outstanding)
-        {
-            throw new DomainException<Stop>(
-                $"The stop {Id} cannot be completed as it has a status of {Status}");
-        }
-        
         Status = StopStatus.Complete;
         CompletedAt = at;
     }
