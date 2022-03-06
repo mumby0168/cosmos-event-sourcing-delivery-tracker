@@ -3,6 +3,7 @@ using DeliveryTracker.Domain.Abstractions.Aggregates;
 using DeliveryTracker.Infrastructure.Items;
 using DeliveryTracker.Infrastructure.Projections;
 using DeliveryTracker.Infrastructure.Repositories;
+using DeliveryTracker.Infrastructure.Services;
 using DeliveryTracker.Infrastructure.Sources;
 using Microsoft.Azure.CosmosEventSourcing.Extensions;
 using Microsoft.Azure.CosmosRepository.AspNetCore.Extensions;
@@ -39,6 +40,7 @@ public static class ServiceCollectionExtensions
         services.AddCosmosRepositoryChangeFeedHostedService();
 
         services.AddSingleton<IScheduleRepository, ScheduleRepository>();
+        services.AddSingleton<IDriverScheduleReadService, DriverScheduleReadService>();
 
         return services;
     }

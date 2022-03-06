@@ -27,5 +27,6 @@ app.UseCleanArchitectureExceptionsHandler();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapScheduleAPIEndpoints();
+app.MapDriverAPIEndpoints();
 
 app.Run();
