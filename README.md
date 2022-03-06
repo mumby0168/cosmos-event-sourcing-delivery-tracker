@@ -82,12 +82,10 @@ public static class ServiceCollectionExtensions
                     .ContainerBuilder
                     .ConfigureEventSourceStore<ScheduleEventSource>(
                         "delivery-schedule-events",
-                        c => 
-                            c.WithServerlessThroughput())
+                        c => c.WithServerlessThroughput())
                     .ConfigureProjectionStore<DriverSchedule>(
                         "projections",
-                        containerOptionsBuilder: c => 
-                            c.WithServerlessThroughput());
+                        containerOptionsBuilder: c => c.WithServerlessThroughput());
             });
 
             builder.AddEventSourceProjectionBuilder<ScheduleEventSource, DriverScheduleProjectionBuilder>();
