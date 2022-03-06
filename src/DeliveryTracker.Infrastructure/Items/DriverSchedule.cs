@@ -17,8 +17,18 @@ public class DriverSchedule : FullItem
     
     public int CompletedStops { get; set; }
     
+    public int FailedStops { get; set; }
+    
+    public int AbandonedStops { get; set; }
+    
     public bool IsInProgress { get; set; }
-
+    
+    public bool IsAbandoned { get; set; }
+    
+    public bool IsComplete { get; set; }
+    
+    public bool IsPartiallyComplete { get; set; }
+    
     public DriverSchedule(
         string id,
         string driverCode)

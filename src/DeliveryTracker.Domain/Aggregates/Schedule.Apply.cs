@@ -136,7 +136,7 @@ public partial class Schedule
             return;
         }
 
-        var partiallyComplete = Stops.All(x =>
+        var partiallyComplete = !Stops.All(x =>
             x.Status is StopStatus.Complete);
 
         AddEvent(new ScheduleCompleted(

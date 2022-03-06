@@ -1,6 +1,8 @@
 using CleanArchitecture.Exceptions.AspNetCore;
 using Convey.CQRS.Commands;
 using DeliveryTracker.Application.Commands;
+using DeliveryTracker.Application.Commands.Schedules;
+using DeliveryTracker.Application.Commands.Stops;
 
 namespace DeliveryTracker.API.Endpoints;
 
@@ -15,18 +17,28 @@ public static class ScheduleEndpoints
             .Produces(200)
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);
+
+        builder.MapPut(Endpoint("/start"), DispatchCommand<StartSchedule.Command>)
+            .Produces(200)
+            .Produces<ErrorResponse>(400)
+            .WithTags(Tag);
+        
+        builder.MapPut(Endpoint("/abandon"), DispatchCommand<AbandonSchedule.Command>)
+            .Produces(200)
+            .Produces<ErrorResponse>(400)
+            .WithTags(Tag);
         
         builder.MapPost(Endpoint("/stops"), DispatchCommand<ScheduleStop.Command>)
             .Produces(200)
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);
-        
-        builder.MapPut(Endpoint("/start"), DispatchCommand<StartSchedule.Command>)
+
+        builder.MapPut(Endpoint("/stops/complete"), DispatchCommand<CompleteStop.Command>)
             .Produces(200)
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);
-
-        builder.MapPut(Endpoint("/stops/complete"), DispatchCommand<CompleteStop.Command>)
+        
+        builder.MapPut(Endpoint("/stops/fail"), DispatchCommand<FailStop.Command>)
             .Produces(200)
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);

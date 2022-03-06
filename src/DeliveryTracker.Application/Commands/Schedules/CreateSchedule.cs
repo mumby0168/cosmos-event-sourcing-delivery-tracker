@@ -3,7 +3,7 @@ using DeliveryTracker.Application.Infrastructure;
 using DeliveryTracker.Domain.Aggregates;
 using DeliveryTracker.Domain.ValueObjects;
 
-namespace DeliveryTracker.Application.Commands;
+namespace DeliveryTracker.Application.Commands.Schedules;
 
 public static class CreateSchedule
 {

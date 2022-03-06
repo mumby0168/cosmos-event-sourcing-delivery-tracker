@@ -25,16 +25,59 @@ public class DriverScheduleProjectionBuilder : IEventSourceProjectionBuilder<Sch
             StopScheduled => HandleStopScheduled(await GetSchedule(source)),
             ScheduleStarted => HandleScheduleStarted(await GetSchedule(source)),
             StopCompleted => HandleStopCompleted(await GetSchedule(source)),
+            StopAbandoned => HandleStopAbandoned(await GetSchedule(source)),
+            StopFailed => HandleStopFailed(await GetSchedule(source)),
+            ScheduleCompleted completed => HandleScheduleCompleted(completed, await GetSchedule(source)),
+            ScheduleAbandoned => HandleScheduleAbandoned(await GetSchedule(source)),
             _ => ValueTask.CompletedTask
         };
 
         await task;
     }
 
+    private async ValueTask HandleScheduleCompleted(
+        ScheduleCompleted completed,
+        DriverSchedule schedule)
+    {
+        schedule.IsInProgress = false;
+        if (completed.IsPartiallyComplete)
+        {
+            schedule.IsPartiallyComplete = true;
+        }
+        else
+        {
+            schedule.IsComplete = true;
+        }
+
+        await _repository.UpdateAsync(schedule);
+    }
+
+    private async ValueTask HandleScheduleAbandoned(
+        DriverSchedule schedule)
+    {
+        schedule.IsInProgress = false;
+        schedule.IsAbandoned = true;
+        await _repository.UpdateAsync(schedule);
+    }
+
     private async ValueTask HandleStopCompleted(
         DriverSchedule schedule)
     {
         schedule.CompletedStops++;
+        await _repository.UpdateAsync(schedule);
+    }
+
+    private async ValueTask HandleStopAbandoned(
+        DriverSchedule schedule)
+    {
+        schedule.AbandonedStops++;
+        await _repository.UpdateAsync(schedule);
+    }
+
+    private async ValueTask HandleStopFailed(
+        DriverSchedule schedule)
+    {
+        schedule.FailedStops++;
         await _repository.UpdateAsync(schedule);
     }
 

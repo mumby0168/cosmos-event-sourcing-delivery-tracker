@@ -1,7 +1,7 @@
 using Convey.CQRS.Commands;
 using DeliveryTracker.Application.Infrastructure;
 
-namespace DeliveryTracker.Application.Commands;
+namespace DeliveryTracker.Application.Commands.Schedules;
 
 public static class StartSchedule
 {

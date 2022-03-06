@@ -1,36 +1,28 @@
 using Convey.CQRS.Commands;
 using DeliveryTracker.Application.Infrastructure;
-using DeliveryTracker.Domain.ValueObjects;
 
-namespace DeliveryTracker.Application.Commands;
+namespace DeliveryTracker.Application.Commands.Stops;
 
-public static class ScheduleStop
+public static class CompleteStop
 {
     public record Command(
         string ScheduleId,
-        int HouseNumber,
-        string AddressLine,
-        string PostCode) : ICommand;
+        Guid StopId) : ICommand;
 
     public class Handler : ICommandHandler<Command>
     {
         private readonly IScheduleRepository _scheduleRepository;
 
-        public Handler(IScheduleRepository scheduleRepository)
-        {
+        public Handler(IScheduleRepository scheduleRepository) => 
             _scheduleRepository = scheduleRepository;
-        }
-        
+
         public async Task HandleAsync(Command command, CancellationToken cancellationToken)
         {
-            var (scheduleId, houseNumber, addressLine, postCode) = command;
+            var (scheduleId, stopId) = command;
             
             var schedule = await _scheduleRepository.ReadAsync(scheduleId);
 
-            schedule.AddStop(new Location(
-                houseNumber, 
-                addressLine, 
-                postCode));
+            schedule.CompleteStop(stopId);
 
             await _scheduleRepository.SaveAsync(schedule);
         }
