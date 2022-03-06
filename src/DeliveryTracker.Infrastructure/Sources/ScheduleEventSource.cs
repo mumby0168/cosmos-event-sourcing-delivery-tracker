@@ -8,19 +8,22 @@ namespace DeliveryTracker.Infrastructure.Sources;
 
 public class ScheduleEventSource : EventSource
 {
-
     public ScheduleEventSource(
+        string driverCode,
         ScheduleId scheduleId, 
         IPersistedEvent persistedEvent) :
         base(persistedEvent, scheduleId)
     {
+        DriverCode = driverCode;
         if (persistedEvent is IStopPersistedEvent stop)
         {
             StopId = stop.StopId;
         }
     }
     
-    public Guid? StopId { get; private set; }
+    public string DriverCode { get; set; } = null!;
+
+    public Guid? StopId { get; set; }
     
     [JsonIgnore]
     public ScheduleId ScheduleId => PartitionKey;

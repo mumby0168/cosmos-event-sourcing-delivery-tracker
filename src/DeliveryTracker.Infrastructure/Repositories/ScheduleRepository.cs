@@ -20,7 +20,7 @@ public class ScheduleRepository : IScheduleRepository
     {
         var newEvents = schedule
             .UnSavedEvents
-            .Select(x => new ScheduleEventSource(schedule.Id, x));
+            .Select(evt => new ScheduleEventSource(schedule.Driver.Code, schedule.Id, evt));
 
         return _eventStore.PersistAsync(newEvents);
     }

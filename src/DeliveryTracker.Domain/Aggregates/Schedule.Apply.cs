@@ -30,6 +30,9 @@ public partial class Schedule
             case StopCompleted stopCompleted:
                 Apply(stopCompleted);
                 break;
+            case ScheduleStarted started:
+                Apply(started);
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(persistedEvent),
                     $"There is no {nameof(Apply)} method configured for {typeof(IPersistedEvent)} of type {persistedEvent.GetType().Name}");
@@ -46,7 +49,7 @@ public partial class Schedule
 
         Id = id;
         Status = ScheduleStatus.Scheduled;
-        
+
         Driver = new Driver(
             driverCode,
             driverFirstName,
@@ -56,25 +59,33 @@ public partial class Schedule
     private void Apply(StopScheduled stopScheduled)
     {
         var (
-            id, 
-            houseNumber, 
-            addressLine, 
+            id,
+            houseNumber,
+            addressLine,
             postCode, _) = stopScheduled;
-        
+
         var location = new Location(
             houseNumber,
             addressLine,
             postCode);
-        
+
         _stops.Add(new Stop(
-            id, 
+            id,
             location));
     }
 
     private void Apply(StopCompleted stopCompleted)
     {
+        if (Status is not ScheduleStatus.InProgress)
+        {
+            throw new DomainException<Schedule>(
+                $"A stop cannot be completed when the schedule is at status {Status}. " +
+                "The schedule must be in progress.");
+        }
+
+
         var (stopId, at) = stopCompleted;
-        
+
         var stop = Stops.FirstOrDefault(x => x.Id == stopId);
 
         if (stop is null)
@@ -85,5 +96,7 @@ public partial class Schedule
 
         stop.Complete(at);
     }
-    
+
+    private void Apply(ScheduleStarted _) => 
+        Status = ScheduleStatus.InProgress;
 }

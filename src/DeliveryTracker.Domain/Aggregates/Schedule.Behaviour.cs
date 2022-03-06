@@ -1,3 +1,4 @@
+using DeliveryTracker.Domain.Enums;
 using DeliveryTracker.Domain.Events;
 using DeliveryTracker.Domain.ValueObjects;
 
@@ -11,6 +12,11 @@ public partial class Schedule
             location.HouseNumber,
             location.AddressLine,
             location.PostCode,
+            DateTime.UtcNow));
+
+    public void Start() =>
+        TryAddEvent(new ScheduleStarted(
+            Id,
             DateTime.UtcNow));
 
     public void CompleteStop(Guid stopId) =>

@@ -21,6 +21,11 @@ public static class ScheduleEndpoints
             .Produces<ErrorResponse>(400)
             .WithTags(Tag);
         
+        builder.MapPut(Endpoint("/start"), DispatchCommand<StartSchedule.Command>)
+            .Produces(200)
+            .Produces<ErrorResponse>(400)
+            .WithTags(Tag);
+
         builder.MapPut(Endpoint("/stops/complete"), DispatchCommand<CompleteStop.Command>)
             .Produces(200)
             .Produces<ErrorResponse>(400)
