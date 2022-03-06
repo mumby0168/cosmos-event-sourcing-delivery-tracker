@@ -11,9 +11,4 @@
     <PackageReference Include="Mumby0168.CleanArchitecture.Exceptions" Version="1.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities" />
-    <Folder Include="Extensions" />
-  </ItemGroup>
-
 </Project>
