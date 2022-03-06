@@ -10,4 +10,9 @@
     <PackageReference Include="IEvangelist.Azure.CosmosRepository.AspNetCore" Version="3.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DeliveryTracker.Application\DeliveryTracker.Application.csproj" />
+    <ProjectReference Include="..\DeliveryTracker.Domain\DeliveryTracker.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
