@@ -8,7 +8,7 @@ namespace DeliveryTracker.Domain.Identifiers;
 /// A ID that can uniquely identify a schedule
 /// </summary>
 /// <remarks>
-/// 14 digits
+/// 16 characters
 /// Made up of the {DriverCode[4]}-{Day[2]}{Month[2]{Year[4]}-{RandomDigits[4]}
 /// </remarks>
 public record ScheduleId
@@ -21,7 +21,7 @@ public record ScheduleId
                 "A value must be provided for a schedule ID");
         }
 
-        if (value.Length != 14)
+        if (value.Length != 16)
         {
             throw new DomainException<ScheduleId>(
                 "A schedule ID must be 12 characters");
@@ -43,6 +43,12 @@ public record ScheduleId
 
         return new ScheduleId($"{driverCode}-{dateString}-{RandomDigits()}");
     }
+    
+    public sealed override string ToString() => Value;
+    
+    public static implicit operator string(ScheduleId identifier) => identifier.Value;
+
+    public static implicit operator ScheduleId(string value) => new(value);
 
     private static string RandomDigits()
     {

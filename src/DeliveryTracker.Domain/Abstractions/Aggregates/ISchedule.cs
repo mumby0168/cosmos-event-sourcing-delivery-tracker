@@ -25,5 +25,5 @@ public interface ISchedule : IAggregateRoot
 
     double Progress { get; }
 
-    void AddStop(Guid id, Location location);
+    void AddStop(Location location);
 }
