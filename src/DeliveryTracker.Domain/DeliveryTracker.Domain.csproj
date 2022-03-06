@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IEvangelist.Azure.CosmosEventSourcing" Version="3.0.3-pre1" />
+    <PackageReference Include="Mumby0168.CleanArchitecture.Exceptions" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities" />
+    <Folder Include="Extensions" />
+  </ItemGroup>
+
+</Project>
