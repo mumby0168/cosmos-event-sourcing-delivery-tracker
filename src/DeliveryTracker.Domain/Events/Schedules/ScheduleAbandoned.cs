@@ -1,11 +1,8 @@
 using Microsoft.Azure.CosmosEventSourcing;
+using Microsoft.Azure.CosmosEventSourcing.Events;
 
 namespace DeliveryTracker.Domain.Events.Schedules;
 
 public record ScheduleAbandoned(
     string ScheduleId,
-    string Reason,
-    DateTime OccuredUtc) : IPersistedEvent
-{
-    public string EventName => nameof(ScheduleAbandoned);
-}
+    string Reason) : DomainEvent;

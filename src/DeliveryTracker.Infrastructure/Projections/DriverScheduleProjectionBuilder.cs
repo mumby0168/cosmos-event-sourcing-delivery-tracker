@@ -7,7 +7,7 @@ using Microsoft.Azure.CosmosRepository;
 
 namespace DeliveryTracker.Infrastructure.Projections;
 
-public class DriverScheduleProjectionBuilder : IEventSourceProjectionBuilder<ScheduleEventSource>
+public class DriverScheduleProjectionBuilder : IEventItemProjectionBuilder<ScheduleEventItem>
 {
     private readonly IRepository<DriverSchedule> _repository;
 
@@ -16,19 +16,19 @@ public class DriverScheduleProjectionBuilder : IEventSourceProjectionBuilder<Sch
 
 
     public async ValueTask ProjectAsync(
-        ScheduleEventSource source,
+        ScheduleEventItem item,
         CancellationToken cancellationToken)
     {
-        var task = source.EventPayload switch
+        var task = item.EventPayload switch
         {
             ScheduleCreated created => HandleScheduleCreated(created),
-            StopScheduled => HandleStopScheduled(await GetSchedule(source)),
-            ScheduleStarted => HandleScheduleStarted(await GetSchedule(source)),
-            StopCompleted => HandleStopCompleted(await GetSchedule(source)),
-            StopAbandoned => HandleStopAbandoned(await GetSchedule(source)),
-            StopFailed => HandleStopFailed(await GetSchedule(source)),
-            ScheduleCompleted completed => HandleScheduleCompleted(completed, await GetSchedule(source)),
-            ScheduleAbandoned => HandleScheduleAbandoned(await GetSchedule(source)),
+            StopScheduled => HandleStopScheduled(await GetSchedule(item)),
+            ScheduleStarted => HandleScheduleStarted(await GetSchedule(item)),
+            StopCompleted => HandleStopCompleted(await GetSchedule(item)),
+            StopAbandoned => HandleStopAbandoned(await GetSchedule(item)),
+            StopFailed => HandleStopFailed(await GetSchedule(item)),
+            ScheduleCompleted completed => HandleScheduleCompleted(completed, await GetSchedule(item)),
+            ScheduleAbandoned => HandleScheduleAbandoned(await GetSchedule(item)),
             _ => ValueTask.CompletedTask
         };
 
@@ -101,6 +101,6 @@ public class DriverScheduleProjectionBuilder : IEventSourceProjectionBuilder<Sch
             created.Id,
             created.DriverCode));
 
-    private ValueTask<DriverSchedule> GetSchedule(ScheduleEventSource s) =>
+    private ValueTask<DriverSchedule> GetSchedule(ScheduleEventItem s) =>
         _repository.GetAsync(s.ScheduleId, s.DriverCode);
 }

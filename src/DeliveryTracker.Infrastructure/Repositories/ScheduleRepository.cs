@@ -5,22 +5,22 @@ using DeliveryTracker.Domain.Aggregates;
 using DeliveryTracker.Domain.Identifiers;
 using DeliveryTracker.Infrastructure.Extensions;
 using DeliveryTracker.Infrastructure.Sources;
-using Microsoft.Azure.CosmosEventSourcing;
+using Microsoft.Azure.CosmosEventSourcing.Stores;
 
 namespace DeliveryTracker.Infrastructure.Repositories;
 
 public class ScheduleRepository : IScheduleRepository
 {
-    private readonly IEventStore<ScheduleEventSource> _eventStore;
+    private readonly IEventStore<ScheduleEventItem> _eventStore;
 
-    public ScheduleRepository(IEventStore<ScheduleEventSource> eventStore) => 
+    public ScheduleRepository(IEventStore<ScheduleEventItem> eventStore) => 
         _eventStore = eventStore;
 
     public ValueTask SaveAsync(ISchedule schedule)
     {
         var newEvents = schedule
             .UnSavedEvents
-            .Select(evt => new ScheduleEventSource(schedule.Driver.Code, schedule.Id, evt));
+            .Select(evt => new ScheduleEventItem(schedule.Driver.Code, schedule.Id, evt));
 
         return _eventStore.PersistAsync(newEvents);
     }
@@ -37,6 +37,6 @@ public class ScheduleRepository : IScheduleRepository
                 $"No schedule found with ID {scheduleId}");
         }
 
-        return Schedule.Replay(events.Select(x => x.EventPayload).ToList());
+        return Schedule.Replay(events.Select(x => x.DomainEventPayload).ToList());
     }
 }

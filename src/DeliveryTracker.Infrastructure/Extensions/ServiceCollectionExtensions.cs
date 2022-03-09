@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
 
                 options
                     .ContainerBuilder
-                    .ConfigureEventSourceStore<ScheduleEventSource>(
+                    .ConfigureEventItemStore<ScheduleEventItem>(
                         "delivery-schedule-events",
                         c => 
                             c.WithServerlessThroughput())
@@ -33,8 +33,8 @@ public static class ServiceCollectionExtensions
                             c.WithServerlessThroughput());
             });
 
-            builder.AddEventSourceProjectionBuilder<ScheduleEventSource, DriverScheduleProjectionBuilder>();
-            builder.AddAllPersistedEventsTypes(typeof(ISchedule).Assembly);
+            builder.AddEventItemProjectionBuilder<ScheduleEventItem, DriverScheduleProjectionBuilder>();
+            builder.AddDomainEventTypes(typeof(ISchedule).Assembly);
         });
 
         services.AddCosmosRepositoryChangeFeedHostedService();

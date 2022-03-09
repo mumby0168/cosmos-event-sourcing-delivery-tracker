@@ -1,11 +1,8 @@
 using Microsoft.Azure.CosmosEventSourcing;
+using Microsoft.Azure.CosmosEventSourcing.Events;
 
 namespace DeliveryTracker.Domain.Events.Schedules;
 
 public record ScheduleCompleted(
     string ScheduleId,
-    bool IsPartiallyComplete,
-    DateTime OccuredUtc) : IPersistedEvent
-{
-    public string EventName => nameof(ScheduleCompleted);
-};
+    bool IsPartiallyComplete) : DomainEvent;

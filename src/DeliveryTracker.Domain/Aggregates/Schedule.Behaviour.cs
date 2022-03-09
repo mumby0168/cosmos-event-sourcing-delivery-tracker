@@ -14,8 +14,7 @@ public partial class Schedule
             Guid.NewGuid(),
             location.HouseNumber,
             location.AddressLine,
-            location.PostCode,
-            DateTime.UtcNow));
+            location.PostCode));
 
     public void Start()
     {
@@ -31,9 +30,7 @@ public partial class Schedule
                 "A schedule cannot be started without any stops");
         }
         
-        AddEvent(new ScheduleStarted(
-            Id,
-            DateTime.UtcNow));
+        AddEvent(new ScheduleStarted(Id));
     }
 
     private void EnsureScheduleStarted()
@@ -64,9 +61,7 @@ public partial class Schedule
                 $"The stop {Id} cannot be completed as it has a status of {Status}");
         }
         
-        AddEvent(new StopCompleted(
-            stopId,
-            DateTime.UtcNow));
+        AddEvent(new StopCompleted(stopId));
     }
     
     public void Abandon(string reason)
@@ -83,14 +78,10 @@ public partial class Schedule
         {
             AddEvent(new StopAbandoned(
                 outstandingStop.Id,
-                reason,
-                at));
+                reason));
         }
 
-        AddEvent(new ScheduleAbandoned(
-            Id, 
-            reason, 
-            at));
+        AddEvent(new ScheduleAbandoned(Id, reason));
     }
 
     public void FailStop(Guid stopId, string reason)
@@ -105,9 +96,6 @@ public partial class Schedule
                 $"A stop cannot be mark as Failed when at status {Status}");
         }
         
-        AddEvent(new StopFailed(
-            stopId, 
-            reason, 
-            DateTime.UtcNow));
+        AddEvent(new StopFailed(stopId, reason));
     }
 }

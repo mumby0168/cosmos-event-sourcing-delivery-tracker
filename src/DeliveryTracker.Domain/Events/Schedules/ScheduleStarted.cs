@@ -1,10 +1,6 @@
-using Microsoft.Azure.CosmosEventSourcing;
+
+using Microsoft.Azure.CosmosEventSourcing.Events;
 
 namespace DeliveryTracker.Domain.Events.Schedules;
 
-public record ScheduleStarted(
-    string ScheduleId,
-    DateTime OccuredUtc) : IPersistedEvent
-{
-    public string EventName => nameof(ScheduleStarted);
-};
+public record ScheduleStarted(string ScheduleId) : DomainEvent;

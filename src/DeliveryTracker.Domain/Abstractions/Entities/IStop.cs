@@ -17,13 +17,13 @@ public interface IStop
     
     StopFailedDetails? FailedDetails { get; }
 
-    void Complete(DateTime at);
+    void Complete();
 
-    void Failed(DateTime at, string reason);
+    void Failed(string reason);
 
-    void Abandoned(DateTime at);
+    void Abandoned();
     
-    void MarkFailed(string reason, DateTime at);
+    void MarkFailed(string reason);
     
-    void MarkAbandoned(string reason, DateTime at);
+    void MarkAbandoned(string reason);
 }

@@ -1,25 +1,23 @@
-using CleanArchitecture.Exceptions;
 using DeliveryTracker.Domain.Abstractions.Aggregates;
 using DeliveryTracker.Domain.Entities;
 using DeliveryTracker.Domain.Enums;
-using DeliveryTracker.Domain.Events;
 using DeliveryTracker.Domain.Events.Schedules;
 using DeliveryTracker.Domain.Events.Stops;
 using DeliveryTracker.Domain.ValueObjects;
-using Microsoft.Azure.CosmosEventSourcing;
+using Microsoft.Azure.CosmosEventSourcing.Events;
 
 namespace DeliveryTracker.Domain.Aggregates;
 
 public partial class Schedule
 {
-    public static ISchedule Replay(List<IPersistedEvent> events)
+    public static ISchedule Replay(List<DomainEvent> events)
     {
         var s = new Schedule();
         s.Apply(events);
         return s;
     }
 
-    protected override void Apply(IPersistedEvent persistedEvent)
+    protected override void Apply(DomainEvent persistedEvent)
     {
         switch (persistedEvent)
         {
@@ -50,7 +48,7 @@ public partial class Schedule
             default:
                 throw new ArgumentOutOfRangeException(nameof(persistedEvent),
                     $"There is no {nameof(Apply)} method configured " +
-                    $"for {typeof(IPersistedEvent)} " +
+                    $"for {typeof(DomainEvent)} " +
                     $"of type {persistedEvent.GetType().Name}");
         }
     }
@@ -61,7 +59,7 @@ public partial class Schedule
             id,
             driverCode,
             driverFirstName,
-            driverSecondName, _) = scheduleCreated;
+            driverSecondName) = scheduleCreated;
 
         Id = id;
         Status = ScheduleStatus.Scheduled;
@@ -78,7 +76,7 @@ public partial class Schedule
             id,
             houseNumber,
             addressLine,
-            postCode, _) = stopScheduled;
+            postCode) = stopScheduled;
 
         var location = new Location(
             houseNumber,
@@ -92,10 +90,9 @@ public partial class Schedule
 
     private void Apply(StopCompleted stopCompleted)
     {
-        var (stopId, at) = stopCompleted;
-        var stop = Stops.First(x => x.Id == stopId);
-        stop.Complete(at);
-        TryMarkComplete(at);
+        var stop = Stops.First(x => x.Id == stopCompleted.StopId);
+        stop.Complete();
+        TryMarkComplete();
     }
 
     private void Apply(ScheduleStarted _) =>
@@ -103,17 +100,17 @@ public partial class Schedule
 
     private void Apply(StopFailed stopFailed)
     {
-        var (stopId, reason, at) = stopFailed;
+        var (stopId, reason) = stopFailed;
         var stop = GetStop(stopId);
-        stop.MarkFailed(reason, at);
-        TryMarkComplete(at);
+        stop.MarkFailed(reason);
+        TryMarkComplete();
     }
 
     private void Apply(StopAbandoned stopAbandoned)
     {
-        var (stopId, reason, at) = stopAbandoned;
+        var (stopId, reason) = stopAbandoned;
         var stop = GetStop(stopId);
-        stop.MarkAbandoned(reason, at);
+        stop.MarkAbandoned(reason);
     }
 
     private void Apply(ScheduleAbandoned _) =>
@@ -124,7 +121,7 @@ public partial class Schedule
             ? ScheduleStatus.PartiallyComplete
             : ScheduleStatus.Complete;
 
-    private void TryMarkComplete(DateTime at)
+    private void TryMarkComplete()
     {
         if (OutstandingStops.Any())
         {
@@ -141,7 +138,6 @@ public partial class Schedule
 
         AddEvent(new ScheduleCompleted(
             Id,
-            partiallyComplete,
-            at));
+            partiallyComplete));
     }
 }

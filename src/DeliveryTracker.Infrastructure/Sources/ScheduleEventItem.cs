@@ -1,21 +1,21 @@
 using DeliveryTracker.Domain.Abstractions.Events;
 using DeliveryTracker.Domain.Identifiers;
-using Microsoft.AspNetCore.Routing.Matching;
-using Microsoft.Azure.CosmosEventSourcing;
+using Microsoft.Azure.CosmosEventSourcing.Events;
+using Microsoft.Azure.CosmosEventSourcing.Items;
 using Newtonsoft.Json;
 
 namespace DeliveryTracker.Infrastructure.Sources;
 
-public class ScheduleEventSource : EventSource
+public class ScheduleEventItem : DefaultEventItem
 {
-    public ScheduleEventSource(
+    public ScheduleEventItem(
         string driverCode,
         ScheduleId scheduleId, 
-        IPersistedEvent persistedEvent) :
-        base(persistedEvent, scheduleId)
+        DomainEvent domainEvent) :
+        base(domainEvent, scheduleId)
     {
         DriverCode = driverCode;
-        if (persistedEvent is IStopPersistedEvent stop)
+        if (domainEvent is IStopDomainEvent stop)
         {
             StopId = stop.StopId;
         }
@@ -28,7 +28,7 @@ public class ScheduleEventSource : EventSource
     [JsonIgnore]
     public ScheduleId ScheduleId => PartitionKey;
     
-    public ScheduleEventSource()
+    public ScheduleEventItem()
     {
         
     }

@@ -27,8 +27,7 @@ public partial class Schedule : AggregateRoot, ISchedule
             Id,
             driver.Code,
             driver.FirstName,
-            driver.SecondName,
-            DateTime.UtcNow));
+            driver.SecondName));
     }
 
     public Schedule()

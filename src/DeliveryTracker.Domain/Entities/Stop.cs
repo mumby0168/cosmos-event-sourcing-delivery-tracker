@@ -26,33 +26,33 @@ public class Stop : IStop
         Status = StopStatus.Outstanding;
     }
 
-    public void Complete(DateTime at)
+    public void Complete()
     {
         Status = StopStatus.Complete;
-        CompletedAt = at;
+        CompletedAt = DateTime.UtcNow;
     }
 
-    public void Failed(DateTime at, string reason)
+    public void Failed(string reason)
     {
         Status = StopStatus.Failed;
-        FailedDetails = new StopFailedDetails(at, reason);
+        FailedDetails = new StopFailedDetails(DateTime.UtcNow, reason);
     }
 
-    public void Abandoned(DateTime at)
+    public void Abandoned()
     {
         Status = StopStatus.Abandoned;
-        AbandonedAt = at;
+        AbandonedAt = DateTime.UtcNow;
     }
 
-    public void MarkFailed(string reason, DateTime at)
+    public void MarkFailed(string reason)
     {
         Status = StopStatus.Failed;
-        FailedDetails = new StopFailedDetails(at, reason);
+        FailedDetails = new StopFailedDetails(DateTime.UtcNow, reason);
     }
 
-    public void MarkAbandoned(string reason, DateTime at)
+    public void MarkAbandoned(string reason)
     {
-        AbandonedAt = at;
+        AbandonedAt = DateTime.UtcNow;
         Status = StopStatus.Abandoned;
     }
 }
