@@ -4,16 +4,17 @@ using Microsoft.Azure.CosmosEventSourcing.Events;
 using Microsoft.Azure.CosmosEventSourcing.Items;
 using Newtonsoft.Json;
 
-namespace DeliveryTracker.Infrastructure.Sources;
+namespace DeliveryTracker.Infrastructure.Items;
 
-public class ScheduleEventItem : DefaultEventItem
+public class ScheduleEventItem : EventItem
 {
     public ScheduleEventItem(
         string driverCode,
         ScheduleId scheduleId, 
-        DomainEvent domainEvent) :
-        base(domainEvent, scheduleId)
+        DomainEvent domainEvent)
     {
+        PartitionKey = scheduleId.ToString();
+        DomainEvent = domainEvent;
         DriverCode = driverCode;
         if (domainEvent is IStopDomainEvent stop)
         {
@@ -21,15 +22,10 @@ public class ScheduleEventItem : DefaultEventItem
         }
     }
     
-    public string DriverCode { get; set; } = null!;
+    public string DriverCode { get; set; }
 
     public Guid? StopId { get; set; }
     
     [JsonIgnore]
     public ScheduleId ScheduleId => PartitionKey;
-    
-    public ScheduleEventItem()
-    {
-        
-    }
 }

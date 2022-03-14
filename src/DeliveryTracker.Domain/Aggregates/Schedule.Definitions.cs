@@ -5,6 +5,7 @@ using DeliveryTracker.Domain.Events;
 using DeliveryTracker.Domain.Events.Schedules;
 using DeliveryTracker.Domain.Identifiers;
 using DeliveryTracker.Domain.ValueObjects;
+using Microsoft.Azure.CosmosEventSourcing.Aggregates;
 
 namespace DeliveryTracker.Domain.Aggregates;
 

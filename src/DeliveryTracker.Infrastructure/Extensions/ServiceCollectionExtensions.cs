@@ -4,7 +4,6 @@ using DeliveryTracker.Infrastructure.Items;
 using DeliveryTracker.Infrastructure.Projections;
 using DeliveryTracker.Infrastructure.Repositories;
 using DeliveryTracker.Infrastructure.Services;
-using DeliveryTracker.Infrastructure.Sources;
 using Microsoft.Azure.CosmosEventSourcing.Extensions;
 using Microsoft.Azure.CosmosRepository.AspNetCore.Extensions;
 using Microsoft.Extensions.DependencyInjection;

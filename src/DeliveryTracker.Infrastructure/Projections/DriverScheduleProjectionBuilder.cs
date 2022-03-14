@@ -1,7 +1,6 @@
 using DeliveryTracker.Domain.Events.Schedules;
 using DeliveryTracker.Domain.Events.Stops;
 using DeliveryTracker.Infrastructure.Items;
-using DeliveryTracker.Infrastructure.Sources;
 using Microsoft.Azure.CosmosEventSourcing.Projections;
 using Microsoft.Azure.CosmosRepository;
 
@@ -19,7 +18,7 @@ public class DriverScheduleProjectionBuilder : IEventItemProjectionBuilder<Sched
         ScheduleEventItem item,
         CancellationToken cancellationToken)
     {
-        var task = item.EventPayload switch
+        var task = item.DomainEvent switch
         {
             ScheduleCreated created => HandleScheduleCreated(created),
             StopScheduled => HandleStopScheduled(await GetSchedule(item)),

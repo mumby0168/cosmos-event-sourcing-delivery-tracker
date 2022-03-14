@@ -2,6 +2,7 @@ using DeliveryTracker.Domain.Abstractions.Entities;
 using DeliveryTracker.Domain.Enums;
 using DeliveryTracker.Domain.Identifiers;
 using DeliveryTracker.Domain.ValueObjects;
+using Microsoft.Azure.CosmosEventSourcing.Aggregates;
 
 namespace DeliveryTracker.Domain.Abstractions.Aggregates;
 
